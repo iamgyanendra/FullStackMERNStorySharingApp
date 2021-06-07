@@ -16,6 +16,10 @@ app.use(cors());
 
 app.use('/posts', postRoutes) //every routs from posts
 
+app.get('/', (req, res)=>{
+    res.send('Hello story app API')
+})
+
 
 const PORT = process.env.PORT || 5000  //port num
 

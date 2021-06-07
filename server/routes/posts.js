@@ -5,10 +5,11 @@ import {getPost, createPost, updatePost, deletePost, likePost} from '../controll
 
 const router = express.Router();
 
+
 router.get('/', getPost);
 router.post('/', createPost);
-router.patch('/:id',updatePost)
+router.put('/:id',updatePost)
 router.delete('/:id', deletePost);
-router.patch('/:id/likePost', likePost);
+router.put('/:id/likePost', likePost);
 
 export default router;
