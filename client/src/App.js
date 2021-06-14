@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import {Container, AppBar, Typography, Grow, Grid} from '@material-ui/core'
+import {Container, Grow, Grid} from '@material-ui/core'
 import {useDispatch} from 'react-redux';//this hook dispatch the action
 
+import Navbar from './components/Navbar/Navbar';
 import {getPost} from './action/posts'
 import Posts from './components/Posts/Posts'
 import Form from './components/Forms/Forms'
-import stories from './images/stories.png';
+
 import useStyles from './styles';
+
 
 //grow tag is for animation
 const App = () => {
@@ -23,12 +25,7 @@ const App = () => {
 
     return(
         <Container maxWidth="lg">
-            <AppBar className={classes.appBar} position= "static" color= "inherit">
-                <Typography className={classes.heading} varient="h2" align="center">
-                    Daily Stories
-                </Typography>
-                <img className={classes.image} src={stories} alt="stories" height= "60"/>
-            </AppBar>
+            <Navbar/>
             <Grow in>
                 <Container>
                     <Grid container className={classes.mainContainer} justify="space-between" alignItems="stretch" spacing={3}>
