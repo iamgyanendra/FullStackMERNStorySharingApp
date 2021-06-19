@@ -1,28 +1,38 @@
-import React from 'react'
-import {AppBar, Typography, Toolbar, Button, Avatar} from '@material-ui/core'
+import React, { useState, useEffect } from 'react'
+import { AppBar, Typography, Toolbar, Button, Avatar } from '@material-ui/core'
 import { Link } from 'react-router-dom';
 // import stories from '../../images/stories.png';
 import useStyles from './styles'
 
 
 
-const Navbar= ()=> {
+const Navbar = () => {
 
-    const classes=useStyles()
-    const user = null;
+    const classes = useStyles()
+
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile'))) //taking user from local storage which we saved (reducer)
+
+    console.log(user);
+
+    useEffect(() => {
+        const token = user?.token;
+        // JWT check for manual sign up
+
+        setUser(JSON.parse(localStorage.getItem('profile')))
+    }, []);
 
     return (
-        <AppBar className={classes.appBar} position= "static" color= "inherit">
-            
+        <AppBar className={classes.appBar} position="static" color="inherit">
+
             <div className={classes.brandContainer}>
 
-            <Typography component={Link} to="/" className={classes.heading} variant="h5" align="center">Daily Stories</Typography>
+                <Typography component={Link} to="/" className={classes.heading} variant="h5" align="center">Daily Stories</Typography>
                 {/* <img className={classes.image} src={stories} alt="stories" height= "60"/> */}
             </div>
             <Toolbar className={classes.toolbar}>
                 {user ? ( //if loged in
-                    <div className= {classes.profile}>
-                        <Avatar className={classes.purple} alt= {user.result.name} src={user.result.imageUrl} >{user.result.name.charAt(0)}</Avatar>
+                    <div className={classes.profile}>
+                        <Avatar className={classes.purple} alt={user.result.name} src={user.result.imageUrl} >{user.result.name.charAt(0)}</Avatar>
                         <Typography className={classes.userName} variant="h6">{user.result.name}</Typography>
                         <Button variant="contained" className={classes.logout} color="secondary">Logout</Button>
                     </div>
@@ -31,7 +41,7 @@ const Navbar= ()=> {
 
                 )}
             </Toolbar>
-            </AppBar>
+        </AppBar>
     )
 }
 export default Navbar;
