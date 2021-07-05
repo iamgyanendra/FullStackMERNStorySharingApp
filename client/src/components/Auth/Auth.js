@@ -11,11 +11,12 @@ import Input from './Input';
 
     const Auth = () => {
     const classes = useStyles();
-    const dispatch = useDispatch();
-    const history = useHistory();
     const [showPassword, setShowPassword] = useState(false);
     const [isSignup, setIsSignup] = useState(false)
+    const dispatch = useDispatch();
+    const history = useHistory();
 
+    const handleShowPassword=() => setShowPassword((prevShowPassword)=> !prevShowPassword)
     const handleSubmit=()=>{
 
     }
@@ -23,7 +24,6 @@ import Input from './Input';
     const handleChange =() =>{
 
     }
-    const handleShowPassword=() => setShowPassword((prevShowPassword)=> !prevShowPassword)
 
     const switchMode = () => {
         setIsSignup((prevIsSignup)=> !prevIsSignup);
