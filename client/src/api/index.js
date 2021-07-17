@@ -1,10 +1,15 @@
 
 import axios from 'axios';
 
-const url = 'https://story-sharing-app.herokuapp.com/posts';
+//const url = 'https://story-sharing-app.herokuapp.com/posts';
 
-export const fetchPost = ()=>axios.get(url);
-export const createPost = (newPost)=>axios.post(url, newPost)
-export const updatePost = (id, updatePost) => axios.patch(`${url}/${id}`, updatePost);
-export const deletePost = (id) => axios.delete(`${url}/${id}`);
-export const likePost = (id)=> axios.patch(`${url}/${id}/likePost`);
+const API = axios.create({ baseURL: 'http://localhost:5000' });
+
+export const fetchPost = ()=>API.get('/posts');
+export const createPost = (newPost)=>API.post('/posts', newPost)
+export const likePost = (id)=> API.patch(`/posts/${id}/likePost`);
+export const updatePost = (id, updatePost) => API.patch(`/posts/${id}`, updatePost);
+export const deletePost = (id) => API.delete(`/posts/${id}`);
+
+export const signIn = (formData) => API.post('/user/signin', formData);
+export const signUp = (formData) => API.post('/user/signup', formData);
