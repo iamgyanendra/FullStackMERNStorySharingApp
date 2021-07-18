@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 const postSchema = mongoose.Schema({
     title: String,
     message: String,
-    name: String,
+    name: String, // name from login data
     creator: String,
     tags: [String],
     selectedFile: String,

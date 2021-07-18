@@ -10,40 +10,51 @@ import {useDispatch, useSelector} from 'react-redux';
 //get the current id from post for updating the post
 
 const Forms = ({currentId, setCurrentId})=> {
-    const [postData, setPostData] = useState({creator: '', title: '', message: '', tags: '', selectedFile: ''})
+    const [postData, setPostData] = useState({title: '', message: '', tags: '', selectedFile: ''})
 
     const post = useSelector((state) => (currentId ? state.posts.find((message) => message._id === currentId) : null));
     const classes = useStyles();
     const dispatch = useDispatch();
 
+    const user = JSON.parse(localStorage.getItem('profile')); //get user name from localstorage
+
     useEffect(() => {
       if(post) setPostData(post);
     }, [post])
 
+    const clear = ()=>{
+      setCurrentId(0)
+      setPostData({title: '', message: '', tags: '', selectedFile: ''})
+
+
+  }
     const handleSubmit = async(e) =>{
         e.preventDefault(); //not to get refresh
 
-        if(currentId){
+        if(currentId===0){
 
-          dispatch(updatePost(currentId, postData));
+          dispatch(createPost({...postData, name: user?.result?.name})); // name from login
+          clear();
         }
         else{
-          dispatch(createPost(postData))
+          dispatch(updatePost(currentId, {...postData, name: user?.result?.name}));
+          clear();
         }
 
-        clear();
     }
-    const clear = ()=>{
-        setCurrentId(null)
-        setPostData({creator: '', title: '', message: '', tags: '', selectedFile: ''})
-
+    if(!user?.result?.name){ // if user is not logged in
+      return(<Paper>
+        <Typography className={classes.paper} color="primary">
+          Please Sign In to Write Your Own Stories and Like other's Stories.
+        </Typography>
+      </Paper>)
 
     }
+   
     return (
     <Paper className={classes.paper}>
       <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
         <Typography variant="h6">{currentId ? 'Edit your Story' : 'Write Your Story'}</Typography>
-        <TextField name="creator" variant="outlined" label="Creator" fullWidth value={postData.creator} onChange={(e) => setPostData({ ...postData, creator: e.target.value })} />
         <TextField name="title" variant="outlined" label="Title" fullWidth value={postData.title} onChange={(e) => setPostData({ ...postData, title: e.target.value })} />
         <TextField name="message" variant="outlined" label="Message" fullWidth multiline rows={4} value={postData.message} onChange={(e) => setPostData({ ...postData, message: e.target.value })} />
         <TextField name="tags" variant="outlined" label="Tags (coma separated)" fullWidth value={postData.tags} onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })} />
