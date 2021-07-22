@@ -5,6 +5,9 @@ import dotenv from 'dotenv';
 
 import postRoutes from './routes/posts.js';
 import userRoutes from './routes/user.js';
+import cookieSession from 'cookie-session';
+
+
 
 //const express = require('express')
 
@@ -31,6 +34,23 @@ var allowCrossDomain = function(req, res, next) {
 }
 
 app.use(allowCrossDomain);
+
+app.set('trust proxy', 1)
+app.use(cookieSession({
+      name: "__session",
+      keys: ["key1"],
+        maxAge: 24 * 60 * 60 * 100,
+        secure: true,
+        httpOnly: true,
+        sameSite: 'none'
+    })
+);
+// app.post('/user', (req, res)=>{
+//     const cookie = "user=gyan; samesite=none; secure"
+
+//     res.setHeader("set-cookie", [cookie])
+//     res.send("ok")
+// })
 
 app.use('/posts', postRoutes); //every routs from posts
 app.use('/user', userRoutes);

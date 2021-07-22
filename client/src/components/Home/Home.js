@@ -1,45 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Grow, Grid, Paper, AppBar, TextField, Button } from '@material-ui/core'
-import { useHistory, useLocation } from 'react-router-dom';
-import ChipInput from 'material-ui-chip-input'
-
-import Posts from '../Posts/Posts'
-import Form from '../Forms/Forms'
-
-import useStyles from './styles';
+import React, { useState } from 'react';
+import { Container, Grow, Grid, AppBar, TextField, Button, Paper, Chip } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { getPosts, getPostsBySearch } from '../../action/posts'
-//import {getPosts, getPostsBySearch} from '../../action/posts'
+import { useHistory, useLocation } from 'react-router-dom';
+import ChipInput from 'material-ui-chip-input';
 
-import Pagination from '../Pagination'
+import { getPostsBySearch } from '../../action/posts';
+import Posts from '../Posts/Posts';
+import Form from '../Forms/Forms';
+import Pagination from '../Pagination';
+import useStyles from './styles';
 
-function useQuery(){
-    return new URLSearchParams(useLocation().search)
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
 }
 const Home = () => {
 
-    const [currentId, setCurrentId] = useState(null) //id is null at the start when id is not slected // sending to the comp
-
     const classes = useStyles();
-    const dispatch = useDispatch();
-    const history = useHistory();
-    const [search, setSearch]=useState("");
-    const [tags, setTags]= useState([])
-    
     const query = useQuery();
-    
     const page = query.get('page') || 1 // this will read url and check if the]re is page parameter or not // if not at page then must be on first page
     const searchQuery = query.get('searchQuery');
 
+    const [currentId, setCurrentId] = useState(0) //id is null at the start when id is not slected // sending to the comp
+    const dispatch = useDispatch();
 
-
+    const [search, setSearch]=useState('');
+    const [tags, setTags]= useState([])
+    const history = useHistory();
     
-    const handleAdd = (tag)=> setTags([...tags, tag])//spread old tag and add new tag init
-    const handleDelete = (tagToDelete)=> setTags(tags.filter((tag)=> tag !== tagToDelete));
+    
+    
     const searchPost= ()=>{
         if(search.trim() || tags){
             //dispatch => fetch search post
-            dispatch(getPostsBySearch( {search, tags: tags.join(",")} )); //tags are like [USA, EROP] => 'usa,EROP' (string)
+            dispatch(getPostsBySearch( {search, tags: tags.join(',')} )); //tags are like [USA, EROP] => 'usa,EROP' (string)
             history.push(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`);
         }else{
             history.push('/')//redirect back if nothing
@@ -51,11 +44,14 @@ const Home = () => {
             searchPost();
         }
     }
+    const handleAddChip = (tag)=> setTags([...tags, tag])//spread old tag and add new tag init
+    
+    const handleDeleteChip = (chipToDelete) => setTags(tags.filter((tag) => tag !== chipToDelete));
 
     return (
         <Grow in>
             <Container maxWidth="xl">
-                <Grid container className={classes.mainContainer} justifyContent="space-between" alignItems="stretch" spacing={3} className= {classes.gridContainer}>
+                <Grid container className={classes.mainContainer} justifyContent="space-between" alignItems="stretch" spacing={3} className={classes.gridContainer}>
                     <Grid item xs={12} sm={6} md={9}>
                         <Posts setCurrentId={setCurrentId} />
                     </Grid>
@@ -65,8 +61,8 @@ const Home = () => {
                             <ChipInput 
                                 style={{margin: '10px 0'}}
                                 value={tags} 
-                                onAdd={handleAdd}
-                                onDelete={handleDelete}
+                                onAdd={(chip)=> handleAddChip(chip)}
+                                onDelete={(chip)=> handleDeleteChip(chip)}
                                 label="Search Tags"
                                 variant="outlined"
                                 />
