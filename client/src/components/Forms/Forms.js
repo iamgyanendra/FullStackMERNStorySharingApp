@@ -5,6 +5,7 @@ import FileBase from 'react-file-base64';//choose file
 import {createPost, updatePost } from '../../action/posts';
 //import { updatePost } from '../../../../server/controllers/posts';
 import {useDispatch, useSelector} from 'react-redux';
+import { useHistory } from 'react-router-dom';
 //
 
 //get the current id from post for updating the post
@@ -12,12 +13,12 @@ import {useDispatch, useSelector} from 'react-redux';
 const Forms = ({currentId, setCurrentId})=> {
     const [postData, setPostData] = useState({title: '', message: '', tags: '', selectedFile: ''})
 
-    const post = useSelector((state) => (currentId ? state.posts.find((message) => message._id === currentId) : null));
+    const post = useSelector((state) => (currentId ? state.posts.posts.find((message) => message._id === currentId) : null));
     const classes = useStyles();
     const dispatch = useDispatch();
 
     const user = JSON.parse(localStorage.getItem('profile')); //get user name from localstorage
-
+    const history = useHistory();
     useEffect(() => {
       if(post) setPostData(post);
     }, [post])
@@ -33,7 +34,8 @@ const Forms = ({currentId, setCurrentId})=> {
 
         if(currentId===0){
 
-          dispatch(createPost({...postData, name: user?.result?.name})); // name from login
+          dispatch(createPost({...postData, name: user?.result?.name}, history)); // name from login
+          
           clear();
         }
         else{
@@ -52,7 +54,7 @@ const Forms = ({currentId, setCurrentId})=> {
     }
    
     return (
-    <Paper className={classes.paper}>
+    <Paper className={classes.paper} elevation={6}>
       <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
         <Typography variant="h6">{currentId ? 'Edit your Story' : 'Write Your Story'}</Typography>
         <TextField name="title" variant="outlined" label="Title" fullWidth value={postData.title} onChange={(e) => setPostData({ ...postData, title: e.target.value })} />

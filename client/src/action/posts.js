@@ -11,16 +11,16 @@ import * as api from '../api/index.js';
 //     return action;
 // }
 export const getPost = (id) => async (dispatch) => {
-    try {
-      dispatch({ type: START_LOADING });
-  
-      const { data } = await api.fetchPost(id);
-  
-      dispatch({ type: FETCH_POST, payload: { post: data } });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  try {
+    dispatch({ type: START_LOADING });
+
+    const { data } = await api.fetchPost(id);
+
+    dispatch({ type: FETCH_POST, payload: { post: data } });
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const getPosts = (page) => async (dispatch) => {
     try {
       dispatch({ type: START_LOADING });
@@ -45,10 +45,10 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
   }
 };
 
-export const createPost = (post) => async (dispatch)=>{ 
+export const createPost = (post, history) => async (dispatch)=>{ 
     try {
         const { data } = await api.createPost(post);
-
+        history.push(`/post/${data._id}`);
         dispatch({type:CREATE, payload:data})
         
     } catch (error) {
