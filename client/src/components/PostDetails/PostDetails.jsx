@@ -25,7 +25,7 @@ const Post = () => {
     
     if(isLoading){
         return(
-            <Paper elevation={6} className={classes.loadingPaper}>
+            <Paper elevation={2} className={classes.loadingPaper}>
                 <CircularProgress size="7em" />
             </Paper>
         )
@@ -35,8 +35,11 @@ const Post = () => {
     const openPost = (_id) => history.push(`/posts/${_id}`)
 
     return (
-        <Paper style={{ padding: '20px', borderRadius: '15px' }} elevation={6}>
+        <Paper style={{ padding: '0px', borderRadius: '6px' }} elevation={2}>
         <div className={classes.card}>
+        <div className={classes.imageSection}>
+            <img className={classes.media} src={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} alt={post.title} />
+          </div>
           <div className={classes.section}>
             <Typography variant="h3" component="h2">{post.title}</Typography>
             <Typography gutterBottom variant="h6" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
@@ -49,9 +52,7 @@ const Post = () => {
             <Typography variant="body1"><strong>Comments - coming soon!</strong></Typography>
             <Divider style={{ margin: '20px 0' }} />
           </div>
-          <div className={classes.imageSection}>
-            <img className={classes.media} src={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} alt={post.title} />
-          </div>
+          
         </div>
         {!!recommendedPosts.length && (
           <div className={classes.section}>

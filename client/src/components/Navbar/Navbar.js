@@ -36,7 +36,7 @@ const Navbar = () => {
   }, [location]);
 
   return (
-    <AppBar className={classes.appBar} position="static" color="inherit">
+    <AppBar className={classes.appBar} position="static" color="inherit" elevation={2} >
       <div className={classes.brandContainer}>
         <Typography component={Link} to="/" className={classes.heading} variant="h5" align="center">Stories App</Typography>
         

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Grow, Grid, AppBar, TextField, Button, Paper, Chip } from '@material-ui/core';
+import { Container, Grow, Grid, AppBar, TextField, Button, Paper } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import ChipInput from 'material-ui-chip-input';
@@ -32,8 +32,8 @@ const Home = () => {
     const searchPost= ()=>{
         if(search.trim() || tags){
             //dispatch => fetch search post
-            dispatch(getPostsBySearch( {search, tags: tags.join(',')} )); //tags are like [USA, EROP] => 'usa,EROP' (string)
-            history.push(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`);
+            dispatch(getPostsBySearch( {search, tags: tags.join(",")} )); //tags are like [USA, EROP] => 'usa,EROP' (string)
+            history.push(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(",")}`);
         }else{
             history.push('/')//redirect back if nothing
         }
@@ -56,7 +56,7 @@ const Home = () => {
                         <Posts setCurrentId={setCurrentId} />
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>
-                        <AppBar className={classes.appBarSearch} position="static" color="inherit">
+                        <AppBar className={classes.appBarSearch} position="static" color="inherit" elevation={2}>
                             <TextField name= "search" variant="outlined" label="Search Stories" fullWidth onKeyPress={handleKeyPress} value={search} onChange={(e)=>setSearch(e.target.value)} />
                             <ChipInput 
                                 style={{margin: '10px 0'}}
@@ -71,7 +71,7 @@ const Home = () => {
                         <Form currentId={currentId} setCurrentId={setCurrentId} />
                         {(!searchQuery && !tags.length) &&(
                             
-                            <Paper className={classes.pagination} elevation={6}>
+                            <Paper className={classes.pagination} elevation={2}>
                                 <Pagination page={page} />
                             </Paper>
                         )}

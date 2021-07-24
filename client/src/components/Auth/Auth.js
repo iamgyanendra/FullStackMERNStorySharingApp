@@ -58,7 +58,7 @@ const SignUp = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Paper className={classes.paper} elevation={3}>
+      <Paper className={classes.paper} elevation={2}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
